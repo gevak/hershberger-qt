@@ -1,9 +1,11 @@
 #ifndef __SEGMENT_HEADER_FILE
 #define __SEGMENT_HEADER_FILE
 
-#define NO_INTERSECTION
+#include <limits>
 
-typedef float coord_type; // I'm skipping the possiblity to implement a rational number class and use it, but that would have been the correct thing to do
+
+
+typedef double coord_type; // I'm skipping the possiblity to implement a rational number class and use it, but that would have been the correct thing to do
 
 
 //TODO: Do I want to have operator= implementations?
@@ -11,6 +13,12 @@ typedef float coord_type; // I'm skipping the possiblity to implement a rational
 //TODO: This is a hacky solution, do something better
 bool IS_ZERO(coord_type val);
 
+coord_type INFINITE_VALUE = std::numeric_limits<coord_type>::infinity();
+
+/*
+	Represents a point. 
+	The y-coord can be infinity, for which we have INFINITE_VALUE defined.
+*/
 class Point {
 public:
 	coord_type x, y;
@@ -75,6 +83,8 @@ public:
 		Returns true iff this segment has larger slope than s, i.e if this segment goes above 's' after their intersection (if such exists).
 	*/
 	coord_type slope_above(const Segment& s) const;
+
+	bool is_infinite_height() const;
 
 };
 

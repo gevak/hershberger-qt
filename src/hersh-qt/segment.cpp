@@ -1,4 +1,5 @@
 #include "segment.h"
+#include <cassert>
 
 //TODO: This is a hacky solution, do something better
 bool IS_ZERO(coord_type val) {
@@ -101,4 +102,11 @@ coord_type Segment::slope_above(const Segment& s2) const {
 	}
 	return delta1.y * delta2.x <= delta2.y * delta1.x;
 
+}
+
+bool Segment::is_infinite_height() const {
+	if (this->beg.y == INFINITE_VALUE) {
+		assert(this->end.y == INFINITE_VALUE);
+		return true;
+	}
 }

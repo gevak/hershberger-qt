@@ -5,7 +5,7 @@
 int add(int i, int j) { return i + j; }
 
 bool points_equal(Point p1, Point p2) {
-	float EPSILON = 0.00001;
+	coord_type EPSILON = 0.00001;
 	return abs(p1.x - p2.x) < EPSILON && abs(p1.y - p2.y) < EPSILON;
 }
 
@@ -50,6 +50,6 @@ BOOST_AUTO_TEST_CASE(test_segment_intersection)
 	BOOST_CHECK(s2.has_intersection(s4));
 
 	Segment s5(Point(0, -0.5), Point(2, 3));
-	BOOST_REQUIRE(s1.has_intersection(s5));
+	BOOST_REQUIRE(!s1.has_intersection(s5));
 
 }
