@@ -27,3 +27,6 @@
 *.exe
 *.out
 *.app
+src/tests/Debug/
+src/hersh-qt/Debug/
+*.sdf
