@@ -9,11 +9,11 @@ vector<Segment> merge_envelopes(vector<Segment>& env1, vector<Segment>& env2) {
 	vector<Segment> res;
 	auto bot = env1;
 	auto top = env2;
-	int ib = 0, it = 0;
+	unsigned int ib = 0, it = 0;
 	// We always maintain that bot is the current lower envelope
 	Point p1 = bot[ib].beg;
 	Point p2 = top[it].beg;
-	if (p2 <= p1) {
+	if (p2 < p1) {
 		auto temp_env = bot;
 		bot = top;
 		top = temp_env;

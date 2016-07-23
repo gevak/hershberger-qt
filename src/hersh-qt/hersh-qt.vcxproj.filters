@@ -27,9 +27,6 @@
     <ClCompile Include="main_console.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="main_console.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="hershberger.h">

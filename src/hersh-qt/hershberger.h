@@ -22,6 +22,6 @@ std::vector<Segment> lower_envelope_hersh(std::vector<Segment> segments);
 	Merges two lower envelope series in linear time using 'merge' algorithm,
 	to obtain the lower envelope of both of them.
 */
-std::vector<Segment> merge_envelopes(std::vector<Segment> env1, std::vector<Segment> env2);
+std::vector<Segment> merge_envelopes(std::vector<Segment>& env1, std::vector<Segment>& env2);
 
 #endif
