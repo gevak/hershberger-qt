@@ -1,6 +1,8 @@
 #include "segment.h"
 #include <cassert>
 
+coord_type Point::INFINITE_VALUE = std::numeric_limits<coord_type>::infinity();
+
 //TODO: This is a hacky solution, do something better
 bool IS_ZERO(coord_type val) {
 	coord_type EPSILON = 0.00001;
@@ -105,8 +107,9 @@ coord_type Segment::slope_above(const Segment& s2) const {
 }
 
 bool Segment::is_infinite_height() const {
-	if (this->beg.y == INFINITE_VALUE) {
-		assert(this->end.y == INFINITE_VALUE);
+	if (this->beg.y == Point::INFINITE_VALUE) {
+		assert(this->end.y == Point::INFINITE_VALUE);
 		return true;
 	}
+	return false;
 }

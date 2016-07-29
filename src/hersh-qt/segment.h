@@ -3,8 +3,6 @@
 
 #include <limits>
 
-
-
 typedef double coord_type; // I'm skipping the possiblity to implement a rational number class and use it, but that would have been the correct thing to do
 
 
@@ -13,7 +11,6 @@ typedef double coord_type; // I'm skipping the possiblity to implement a rationa
 //TODO: This is a hacky solution, do something better
 bool IS_ZERO(coord_type val);
 
-coord_type INFINITE_VALUE = std::numeric_limits<coord_type>::infinity();
 
 /*
 	Represents a point. 
@@ -21,6 +18,7 @@ coord_type INFINITE_VALUE = std::numeric_limits<coord_type>::infinity();
 */
 class Point {
 public:
+	static coord_type INFINITE_VALUE;
 	coord_type x, y;
 	/*
 	 Constructor from x,y coords.

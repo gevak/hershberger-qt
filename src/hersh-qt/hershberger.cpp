@@ -24,7 +24,8 @@ vector<Segment> merge_envelopes(vector<Segment>& env1, vector<Segment>& env2) {
 		ib = it;
 		it = temp_i;
 	}
-	while (bot[ib].end.x != INFINITE_VALUE || top[it].end.x != INFINITE_VALUE) {
+	while (bot[ib].end.x != Point::INFINITE_VALUE || top[it].end.x != Point::INFINITE_VALUE) {
+
 		// When we check if they intersect, we also make sure to check that bot goes above top,
 		// which may seem trivial, but if we don't check we will always get infinite loops after intersection points because the cut-out new segment also intersects.
 		if (bot[ib].has_intersection(top[it]) && bot[ib].slope_above(top[it])) {
@@ -54,11 +55,11 @@ vector<Segment> lower_envelope_dc(vector<Segment> segments) {
 	if (segments.size() == 1) {
 		vector<Segment> ans;
 		Segment s = segments[0];
-		Point min_inf(-INFINITE_VALUE, INFINITE_VALUE); //TODO: does this work?
-		Point plus_inf(INFINITE_VALUE, INFINITE_VALUE);
-		ans.push_back(Segment(min_inf, Point(s.beg.x, INFINITE_VALUE)));
+		Point min_inf(-Point::INFINITE_VALUE, Point::INFINITE_VALUE); //TODO: does this work?
+		Point plus_inf(Point::INFINITE_VALUE, Point::INFINITE_VALUE);
+		ans.push_back(Segment(min_inf, Point(s.beg.x, Point::INFINITE_VALUE)));
 		ans.push_back(s);
-		ans.push_back(Segment(Point(s.end.x, INFINITE_VALUE), plus_inf));
+		ans.push_back(Segment(Point(s.end.x, Point::INFINITE_VALUE), plus_inf));
 		return ans;
 	}
 	
