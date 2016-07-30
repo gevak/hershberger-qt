@@ -109,4 +109,5 @@ bool Segment::is_infinite_height() const {
 		assert(this->end.y == INFINITE_VALUE);
 		return true;
 	}
+	return false;
 }
