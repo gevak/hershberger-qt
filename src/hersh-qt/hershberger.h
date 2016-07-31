@@ -6,6 +6,8 @@
 #include "iostream"
 #include "algorithm"
 
+#define SWAP(x,y) {auto z = x; x = y; y = z;}
+
 /*
 	Calculates lower envelope using simple divide and conquer algorithm in time O(n \alpha(n) log n).
 	Returns the lower envelope as a series of segments sorted by x value, which is not the best for some uses.

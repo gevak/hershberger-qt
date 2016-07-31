@@ -10,40 +10,65 @@ vector<Segment> merge_envelopes(vector<Segment>& env1, vector<Segment>& env2) {
 	auto bot = env1;
 	auto top = env2;
 	unsigned int ib = 0, it = 0;
-	// We always maintain that bot is the current lower envelope
-	Point p1 = bot[ib].beg;
-	Point p2 = top[it].beg;
-	if (p2 < p1) {
-		auto temp_env = bot;
-		bot = top;
-		top = temp_env;
-		auto temp_p = p1;
-		p1 = p2;
-		p2 = temp_p;
-		auto temp_i = ib;
-		ib = it;
-		it = temp_i;
+	// We always maintain that bot is the current lower envelope, and bottom segment starts left to top
+	// TODO avoid 'restitch' by extending bottom as much as we can each time, but remember to handle
+	// cases where both segments go to infinity or top drops from infinity to below bot, which can be done by implementing segment.is_above(point).
+	Point p_bot = bot[ib].beg;
+	Point p_top = top[it].beg;
+	if (p_top.y < p_bot.y) {
+		SWAP(top, bot); // Note that this is a pointer swap, so it should be O(1)
+		SWAP(it, ib);
 	}
+	// We also want to make sure we 're-stitch' any split segment where both ends survived.
+	// This can be easily achieve by remembering if the last segment that we inserted was split and continued on the lower envelope, 
+	// indicated by 'restitch=true', and if we're about to enter part of the same segment we stitch them together.
+	bool restitch = false;
 	while (bot[ib].end.x != Point::INFINITE_VALUE || top[it].end.x != Point::INFINITE_VALUE) {
-
 		// When we check if they intersect, we also make sure to check that bot goes above top,
 		// which may seem trivial, but if we don't check we will always get infinite loops after intersection points because the cut-out new segment also intersects.
 		if (bot[ib].has_intersection(top[it]) && bot[ib].slope_above(top[it])) {
-			// bot and top switch, replace them and cut them
+			// bot and top switch, so we swap them and cut them
 			Point p_i = bot[ib].get_intersection(top[it]);
-			
-		}
+			SWAP(top, bot);
+			SWAP(it, ib);
+			// Insert newly cut segment to resulting envelope (+restitch if we need to).
+			// TODO code
+			if (restitch) {
+
+			}
+			// Cut the segments from the intersection point, don't change list indices
+			top[it].beg = p_i;
+			bot[ib].beg = p_i;
+			restitch = false;
+		} 
 		else {
 			// We need to advance the segment that ends first.
-			// If it's the bottom one we need to insert it and cut the other one afterwards.
+			if (bot[ib].end.x < top[it].end.x) {
+				// bottom ends first, we need to insert it (+restitch?), and cut the top one, and increase bot index.
+				
+				ib++;
+				// If the next bottom segment is infinite, top just became the bottom.
+				// Otherwise, bottom is still below (it is continous).
+				if (bot[ib].is_infinite_height()) {
+					SWAP(top, bot);
+					SWAP(ib, it);
+				}
+				restitch = false;
+
+			}
+			else {
+				// top ends first, we need to split bot, insert it to env (+restitch?), and increase top index.
+				// Since we split it in the middle we set 'restitch' to true.
+				
+				it++;
+				restitch = true;
+
+			}
 			
-			// We also want to make sure we 're-stitch' any split segment where both ends survived.
-			// This can be easily achieve by remembering the last segment that we inserted into 'ans', 
-			// and if we're about to enter part of the same segment we stitch them together.
 			
 		}
 	}
-	return vector<Segment>();
+	return res;
 }
 
 vector<Segment> lower_envelope_dc(vector<Segment> segments) {
@@ -55,7 +80,7 @@ vector<Segment> lower_envelope_dc(vector<Segment> segments) {
 	if (segments.size() == 1) {
 		vector<Segment> ans;
 		Segment s = segments[0];
-		Point min_inf(-Point::INFINITE_VALUE, Point::INFINITE_VALUE); //TODO: does this work?
+		Point min_inf(-Point::INFINITE_VALUE, Point::INFINITE_VALUE);
 		Point plus_inf(Point::INFINITE_VALUE, Point::INFINITE_VALUE);
 		ans.push_back(Segment(min_inf, Point(s.beg.x, Point::INFINITE_VALUE)));
 		ans.push_back(s);
