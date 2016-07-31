@@ -30,3 +30,6 @@
 src/tests/Debug/
 src/hersh-qt/Debug/
 *.sdf
+*.tlog
+*.idb
+*.VC.db
