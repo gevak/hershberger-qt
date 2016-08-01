@@ -41,6 +41,8 @@ public:
 	*/
 	bool operator<(const Point& p) const;
 	bool operator==(const Point& p) const;
+
+	bool is_below(const Segment& s) const;
 };
 
 class Segment {
@@ -87,6 +89,8 @@ public:
 	bool is_vertical() const;
 
 	Point get_point_at_x(coord_type x) const;
+
+	bool is_above(const Point& p) const;
 
 };
 

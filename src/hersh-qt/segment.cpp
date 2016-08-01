@@ -36,7 +36,11 @@ bool Point::operator<(const Point& p) const {
 
 bool Point::operator==(const Point& p) const {
 	return this->x == p.x && this->y == p.y;
-};
+}
+bool Point::is_below(const Segment& s) const {
+	return s.is_above(*this);
+}
+
 
 /*
 	Segment class implemetation.
@@ -143,4 +147,16 @@ Point Segment::get_point_at_x(coord_type x) const
 {
 	assert(this->beg.x <= x && this->end.x >= x);
 	return this->get_intersection(Segment(Point(x, -Point::INFINITE_VALUE), Point(x, Point::INFINITE_VALUE)));
+}
+
+bool Segment::is_above(const Point& p) const
+{
+	assert(this->beg.x <= p.x);
+	if (this->end.x < p.x) {
+		return false;
+	}
+	if (this->is_infinite_height()) { // TODO remove this and simply make get_intersection work with infinite height segments
+		return true;
+	}
+	return this->get_point_at_x(p.x).y > p.y; // TODO there is a better, linear algebra way to check this
 }
