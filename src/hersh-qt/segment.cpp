@@ -1,5 +1,6 @@
 #include "segment.h"
 #include <cassert>
+#include <algorithm>
 
 coord_type Point::INFINITE_VALUE = std::numeric_limits<coord_type>::infinity();
 
@@ -50,7 +51,6 @@ bool Segment::operator<=(const Segment& s) const {
 }
 
 /*
-
 	TODO: This is inaccurate. Implement a better solution.
 */
 bool Segment::contains(const Point& p) const {
@@ -59,6 +59,10 @@ bool Segment::contains(const Point& p) const {
 	if (!IS_ZERO(delta1.x * delta2.y - delta1.y * delta2.x)) {
 		// Point not even on the infinite line
 		return false;
+	}
+	;
+	if (this->is_vertical()) {
+		return p.y >= std::min(this->beg.y, this->end.y) && p.y <= std::max(this->beg.y, this->end.y);
 	}
 	coord_type t = delta2.x / delta1.x;
 	return t >= 0 && t <= 1;
@@ -71,6 +75,9 @@ bool Segment::is_parallel(const Segment& s) const {
 }
 
 bool Segment::has_intersection(const Segment& s) const {
+	if (this->is_vertical() && s.is_vertical()) {
+		return false;
+	}
 	if (this->is_parallel(s)) {
 		// Segments are parallel, return false
 		return false;
@@ -82,16 +89,29 @@ bool Segment::has_intersection(const Segment& s) const {
 Point Segment::get_intersection(const Segment& s2) const {
 	// We assume that the segments are non-parallel
 	Segment s1 = *this;
+	if (s2.is_vertical()) {
+		return s2.get_intersection(s1); // Since only one of them can be vertical, this can't cause an infinite loop
+	}
 	Point delta1 = s1.end - s1.beg;
 	//TODO: This can be implemented better with vector operations
-	coord_type m1 = delta1.y / delta1.x;
+	// We know s2 is not vertical
 	Point delta2 = s2.end - s2.beg;
 	coord_type m2 = delta2.y / delta2.x;
-	coord_type c1 = s1.beg.y - m1 * s1.beg.x;
 	coord_type c2 = s2.beg.y - m2 * s2.beg.x;
+	coord_type x_i;
+	coord_type y_i;
 	// Calculate intersection point
-	coord_type x_i = (c2 - c1) / (m1 - m2);
-	coord_type y_i = m1 * x_i + c1;
+	if (s1.is_vertical()) {
+		x_i = s1.beg.x;
+		y_i = m2 * x_i + c2;
+	}
+	else {
+		coord_type m1 = delta1.y / delta1.x;
+		coord_type c1 = s1.beg.y - m1 * s1.beg.x;
+		x_i = (c2 - c1) / (m1 - m2);
+		y_i = m1 * x_i + c1;
+	}
+	
 	return Point(x_i, y_i);
 }
 
@@ -112,4 +132,15 @@ bool Segment::is_infinite_height() const {
 		return true;
 	}
 	return false;
+}
+
+bool Segment::is_vertical() const
+{
+	return this->beg.x == this->end.x;
+}
+
+Point Segment::get_point_at_x(coord_type x) const
+{
+	assert(this->beg.x <= x && this->end.x >= x);
+	return this->get_intersection(Segment(Point(x, -Point::INFINITE_VALUE), Point(x, Point::INFINITE_VALUE)));
 }

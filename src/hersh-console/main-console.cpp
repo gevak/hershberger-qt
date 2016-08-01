@@ -4,7 +4,7 @@
 #include "segment.h"
 
 int main(int argc, char** argv) {
-	printf("%d", Point::INFINITE_VALUE > 3);
+	printf("%d", -7 / Point::INFINITE_VALUE > 0);
 	_getch();
 	return 0;
 }

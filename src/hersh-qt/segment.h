@@ -84,6 +84,10 @@ public:
 
 	bool is_infinite_height() const;
 
+	bool is_vertical() const;
+
+	Point get_point_at_x(coord_type x) const;
+
 };
 
 #endif

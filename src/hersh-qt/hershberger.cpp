@@ -12,7 +12,8 @@ vector<Segment> merge_envelopes(vector<Segment>& env1, vector<Segment>& env2) {
 	unsigned int ib = 0, it = 0;
 	// We always maintain that bot is the current lower envelope, and bottom segment starts left to top
 	// TODO avoid 'restitch' by extending bottom as much as we can each time, but remember to handle
-	// cases where both segments go to infinity or top drops from infinity to below bot, which can be done by implementing segment.is_above(point).
+	// cases where both segments go to infinity or top drops suddenly from above to below bot, which can be done by implementing segment.is_above(point).
+	// TODO Maybe just handle the envelope as a set of continous segments, including vertical ones? This will avoid many of the cases here.
 	Point p_bot = bot[ib].beg;
 	Point p_top = top[it].beg;
 	if (p_top.y < p_bot.y) {

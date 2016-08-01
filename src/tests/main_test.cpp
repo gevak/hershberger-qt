@@ -53,3 +53,28 @@ BOOST_AUTO_TEST_CASE(test_segment_intersection)
 	BOOST_REQUIRE(!s1.has_intersection(s5));
 
 }
+
+BOOST_AUTO_TEST_CASE(test_vertical_segments) 
+{
+	Segment s1(Point(0, -1), Point(0, 2));
+	Segment s2(Point(-2, 1), Point(2, 1));
+	BOOST_REQUIRE(s1.has_intersection(s2));
+	BOOST_CHECK(points_equal(s1.get_intersection(s2), Point(0, 1)));
+
+	Segment s21(Point(-2, 0), Point(4, 3));
+	BOOST_REQUIRE(s1.has_intersection(s21));
+	BOOST_CHECK(points_equal(s1.get_intersection(s21), Point(0, 1)));
+
+	Segment s3(Point(-3, 1), Point(-2, -1));
+	BOOST_CHECK(!s1.has_intersection(s3));
+
+	// Parallel segments
+	Segment s4(Point(1, -0.5), Point(1, 1.5));
+	BOOST_CHECK(!s1.has_intersection(s4));
+
+	Segment s41(Point(0, 3), Point(0, 5));
+	BOOST_CHECK(!s1.has_intersection(s41));
+
+	Segment s5(Point(-1, -2), Point(1, 16));
+	BOOST_REQUIRE(!s1.has_intersection(s5));
+}
