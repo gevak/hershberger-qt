@@ -14,6 +14,7 @@ vector<Segment> merge_envelopes(vector<Segment>& env1, vector<Segment>& env2) {
 	// TODO avoid 'restitch' by extending bottom as much as we can each time, but remember to handle
 	// cases where both segments go to infinity or top drops suddenly from above to below bot, which can be done by implementing segment.is_above(point).
 	// TODO Maybe just handle the envelope as a set of continous segments, including vertical ones? This will avoid many of the cases here.
+
 	// TODO We probably don't need this, they both start at infinity, but is it bad that we don't know which is top and which is bot?
 	/* Point p_bot = bot[ib].beg;
 	Point p_top = top[it].beg;
@@ -42,13 +43,17 @@ vector<Segment> merge_envelopes(vector<Segment>& env1, vector<Segment>& env2) {
 			// We need to advance the segment that ends first.
 			if (bot[ib].end.x < top[it].end.x) {
 				// bottom ends first, we need to cut the top one, insert bot to envelope, and increase bot index.
-				top[it] = Segment(top[it]);
+				// We first check if the new bottom segment begins above top, because then we need to swap them.
+				bool swap_order = false;
+				if (!top[it].is_above(bot[ib + 1].beg)) {
+					swap_order = true;
+				}
 				top[it].beg = top[it].get_point_at_x(bot[ib].end.x);
 				res.push_back(bot[ib]);
 				ib++;
 				// If the next bottom segment is at infinity, top just became the bottom.
 				// Otherwise, bottom is still below (it is continous).
-				if (bot[ib].is_infinite_height()) {
+				if (swap_order) {
 					SWAP(top, bot);
 					SWAP(ib, it);
 				}
