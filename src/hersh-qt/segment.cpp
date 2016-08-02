@@ -37,8 +37,15 @@ bool Point::operator<(const Point& p) const {
 bool Point::operator==(const Point& p) const {
 	return this->x == p.x && this->y == p.y;
 }
+
 bool Point::is_below(const Segment& s) const {
 	return s.is_above(*this);
+}
+
+std::ostream& operator<<(std::ostream& os, const Point& p)
+{
+	os << "(" << p.x << ", " << p.y << ")";
+	return os;
 }
 
 
@@ -159,4 +166,10 @@ bool Segment::is_above(const Point& p) const
 		return true;
 	}
 	return this->get_point_at_x(p.x).y > p.y; // TODO there is a better, linear algebra way to check this
+}
+
+std::ostream& operator<<(std::ostream& os, const Segment& s)
+{
+	os << "[" << s.beg << " -> " << s.end << "]";
+	return os;
 }

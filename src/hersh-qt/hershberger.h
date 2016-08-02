@@ -26,4 +26,9 @@ std::vector<Segment> lower_envelope_hersh(std::vector<Segment> segments);
 */
 std::vector<Segment> merge_envelopes(std::vector<Segment>& env1, std::vector<Segment>& env2);
 
+/*
+	Utility method for pretty-printing.
+*/
+void print_envelope(std::vector<Segment>& env);
+
 #endif

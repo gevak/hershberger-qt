@@ -2,6 +2,7 @@
 #define __SEGMENT_HEADER_FILE
 
 #include <limits>
+#include <iostream>
 
 typedef double coord_type; // I'm skipping the possiblity to implement a rational number class and use it, but that would have been the correct thing to do
 
@@ -10,6 +11,9 @@ typedef double coord_type; // I'm skipping the possiblity to implement a rationa
 
 //TODO: This is a hacky solution, do something better
 bool IS_ZERO(coord_type val);
+
+class Point;
+class Segment;
 
 
 /*
@@ -40,10 +44,14 @@ public:
 		For points with equal 'x' value, return p1 < p2 if p1 is below p2.
 	*/
 	bool operator<(const Point& p) const;
+
 	bool operator==(const Point& p) const;
 
 	bool is_below(const Segment& s) const;
+
 };
+
+std::ostream& operator<<(std::ostream& os, const Point& p);
 
 class Segment {
 public:
@@ -93,5 +101,7 @@ public:
 	bool is_above(const Point& p) const;
 
 };
+
+std::ostream& operator<<(std::ostream& os, const Segment& s);
 
 #endif
