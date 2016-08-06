@@ -40,7 +40,7 @@ public:
     {
         if (EnvelopeAppClass->objectName().isEmpty())
             EnvelopeAppClass->setObjectName(QStringLiteral("EnvelopeAppClass"));
-        EnvelopeAppClass->resize(410, 283);
+        EnvelopeAppClass->resize(410, 357);
         actionClear = new QAction(EnvelopeAppClass);
         actionClear->setObjectName(QStringLiteral("actionClear"));
         actionInsert_Random = new QAction(EnvelopeAppClass);

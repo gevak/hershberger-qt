@@ -1,13 +1,16 @@
-#include "segmentpaintwidget.h"
 #include <qmessagebox.h>
+#include <qtextstream.h>
+#include <qdebug.h>
+#include <qlogging.h>
+
+#include "segmentpaintwidget.h"
 
 using std::vector;
 
-SegmentPaintWidget::SegmentPaintWidget(QWidget* obj = 0) : QWidget(obj) {
-	vector<Segment> segs;
+SegmentPaintWidget::SegmentPaintWidget(QWidget* obj = 0) : QWidget(obj), segments() {
 	segments.push_back(Segment(Point(10, 10), Point(80, 80)));
+	segments.push_back(Segment(Point(20, 50), Point(130, 200)));
 	segments.push_back(Segment(Point(100, 30), Point(200, 80)));
-	this->segments = segs;
 }
 
 void SegmentPaintWidget::paintEvent(QPaintEvent*) {

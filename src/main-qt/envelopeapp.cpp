@@ -19,9 +19,6 @@ EnvelopeApp::EnvelopeApp(QWidget *parent)
 }
 
 void EnvelopeApp::customUiSetup() {
-	SegmentPaintWidget* drawWidget = new SegmentPaintWidget(this->centralWidget());
-	drawWidget->setGeometry(0, 0, 300, 300);
-	this->ui.centralWidget = drawWidget;
 	this->setWindowTitle("Envelope Display");
 }
 
