@@ -34,3 +34,4 @@ src/hersh-qt/Debug/
 *.idb
 *.VC.db
 *.opendb
+*.opensdf
