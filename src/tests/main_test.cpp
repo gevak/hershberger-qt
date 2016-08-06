@@ -1,6 +1,10 @@
 #define BOOST_TEST_MODULE HershbergerTests
 #include <boost/test/unit_test.hpp>
+#include <vector>
+
 #include "hershberger.h"
+
+using std::vector;
 
 int add(int i, int j) { return i + j; }
 
@@ -8,6 +12,8 @@ bool points_equal(Point p1, Point p2) {
 	coord_type EPSILON = 0.00001;
 	return abs(p1.x - p2.x) < EPSILON && abs(p1.y - p2.y) < EPSILON;
 }
+
+
 
 BOOST_AUTO_TEST_CASE(test_segment_contains_point) 
 {
@@ -78,3 +84,30 @@ BOOST_AUTO_TEST_CASE(test_vertical_segments)
 	Segment s5(Point(-1, -2), Point(1, 16));
 	BOOST_REQUIRE(!s1.has_intersection(s5));
 }
+
+
+/*
+BOOST_AUTO_TEST_CASE(test_merge)
+{
+vector<Segment> segs1;
+
+vector<Segment> segs2;
+
+} */
+
+/*
+BOOST_AUTO_TEST_CASE(test_envelope)
+{
+	vector<Segment> segs;
+	segs.push_back(Segment(Point(-2, -1), Point(2, 3)));
+	segs.push_back(Segment(Point(-1.5, 0), Point(2.5, 0)));
+	segs.push_back(Segment(Point(0, 1), Point(3, -2)));
+	vector<Segment> ans = lower_envelope_dc(segs);
+	std::cout << ans << std::endl; //DELETEME
+	BOOST_REQUIRE_EQUAL(ans.size(), 5);
+	BOOST_REQUIRE(ans[0].is_infinite_height());
+	BOOST_REQUIRE(points_equal(ans[1].beg, Point(-2, -1)));
+	BOOST_REQUIRE(points_equal(ans[2].beg, Point(-1, 0)));
+	BOOST_REQUIRE(points_equal(ans[3].beg, Point(1, 0)));
+	BOOST_REQUIRE(points_equal(ans[4].beg, Point(3, -2)));
+} */

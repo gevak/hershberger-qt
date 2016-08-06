@@ -20,6 +20,8 @@ EnvelopeApp::EnvelopeApp(QWidget *parent)
 
 void EnvelopeApp::customUiSetup() {
 	this->setWindowTitle("Envelope Display");
+	QObject::connect(ui.actionClear, &QAction::triggered, ui.envDrawWidget, &SegmentPaintWidget::clearSegments);
+	QObject::connect(ui.actionInsert_Random, &QAction::triggered, ui.envDrawWidget, &SegmentPaintWidget::addRandomSegment);
 }
 
 EnvelopeApp::~EnvelopeApp()

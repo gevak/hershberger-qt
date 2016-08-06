@@ -3,6 +3,9 @@
 
 #include <limits>
 #include <iostream>
+#include <vector>
+
+#include "util.h"
 
 typedef double coord_type; // I'm skipping the possiblity to implement a rational number class and use it, but that would have been the correct thing to do
 
@@ -103,5 +106,7 @@ public:
 };
 
 std::ostream& operator<<(std::ostream& os, const Segment& s);
+
+std::ostream& operator<<(std::ostream& os, const std::vector<Segment>& s);
 
 #endif

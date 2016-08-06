@@ -1,6 +1,7 @@
 #include "segment.h"
 #include <cassert>
 #include <algorithm>
+#include <vector>
 
 coord_type Point::INFINITE_VALUE = std::numeric_limits<coord_type>::infinity();
 
@@ -53,9 +54,17 @@ std::ostream& operator<<(std::ostream& os, const Point& p)
 	Segment class implemetation.
 */
 
-Segment::Segment(const Point& beg, const Point& end) : beg(beg), end(end) {};
+Segment::Segment(const Point& beg, const Point& end) : beg(beg), end(end) {
+	if (this->end.x < this->beg.x) {
+		SWAP(this->beg, this->end);
+	}
+};
 
-Segment::Segment(const Segment& s) : beg(s.beg), end(s.end) {}; 
+Segment::Segment(const Segment& s) : beg(s.beg), end(s.end) {
+	if (this->end.x < this->beg.x) {
+		SWAP(this->beg, this->end);
+	}
+}; 
 
 bool Segment::operator<=(const Segment& s) const {
 	return this->end < s.end;
@@ -171,5 +180,13 @@ bool Segment::is_above(const Point& p) const
 std::ostream& operator<<(std::ostream& os, const Segment& s)
 {
 	os << "[" << s.beg << " -> " << s.end << "]";
+	return os;
+}
+
+std::ostream& operator<<(std::ostream& os, const std::vector<Segment>& s)
+{
+	for (int i = 0; i < s.size(); i++) {
+		os << i << ". " << s[i] << std::endl;
+	}
 	return os;
 }

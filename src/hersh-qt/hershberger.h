@@ -2,11 +2,11 @@
 #define __HERSHBERGER_HEADER_FILE
 
 #include <vector>
-#include "segment.h"
-#include "iostream"
-#include "algorithm"
+#include <iostream>
+#include <algorithm>
 
-#define SWAP(x,y) {auto z = x; x = y; y = z;}
+#include "segment.h"
+#include "util.h"
 
 /*
 	Calculates lower envelope using simple divide and conquer algorithm in time O(n \alpha(n) log n).

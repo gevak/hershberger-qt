@@ -1,5 +1,6 @@
-#include "hershberger.h"
 #include <iterator>
+
+#include "hershberger.h"
 
 using std::vector;
 using std::iterator;
