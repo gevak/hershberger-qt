@@ -30,7 +30,7 @@ public:
 	/*
 	 Constructor from x,y coords.
 	*/
-	Point(coord_type x, coord_type y);
+	Point(coord_type x=0, coord_type y=0);
 	/*
 	* Copy constructor.
 	*/
@@ -51,6 +51,8 @@ public:
 	bool operator==(const Point& p) const;
 
 	bool is_below(const Segment& s) const;
+
+	coord_type square_dist(const Point& p) const;
 
 };
 

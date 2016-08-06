@@ -16,7 +16,7 @@ bool IS_ZERO(coord_type val) {
 	Point class implementation.
 */
 
-Point::Point(coord_type x=0, coord_type y=0) : x(x), y(y) {};
+Point::Point(coord_type x, coord_type y) : x(x), y(y) {};
 
 Point::Point(const Point& p) {
 	this->x = p.x;
@@ -41,6 +41,12 @@ bool Point::operator==(const Point& p) const {
 
 bool Point::is_below(const Segment& s) const {
 	return s.is_above(*this);
+}
+
+coord_type Point::square_dist(const Point& p) const {
+	coord_type dx = this->x - p.x;
+	coord_type dy = this->y - p.y;
+	return dx*dx + dy*dy;
 }
 
 std::ostream& operator<<(std::ostream& os, const Point& p)
@@ -185,7 +191,7 @@ std::ostream& operator<<(std::ostream& os, const Segment& s)
 
 std::ostream& operator<<(std::ostream& os, const std::vector<Segment>& s)
 {
-	for (int i = 0; i < s.size(); i++) {
+	for (unsigned int i = 0; i < s.size(); i++) {
 		os << i << ". " << s[i] << std::endl;
 	}
 	return os;

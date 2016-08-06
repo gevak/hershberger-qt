@@ -94,6 +94,14 @@ vector<Segment> lower_envelope_dc(vector<Segment> segments) {
 	// This solution does cause our memory consumption to reach O(nlogn) which is not really necessary, 
 	// but good enough since this isn't the algorithm we're here to implement
 	// TODO: Improve this memory consumption
+	if (segments.size() <= 0) {
+		vector<Segment> ans;
+		Point min_inf(-Point::INFINITE_VALUE, Point::INFINITE_VALUE);
+		Point plus_inf(Point::INFINITE_VALUE, Point::INFINITE_VALUE);
+		ans.push_back(Segment(min_inf, plus_inf));
+		return ans;
+	}
+
 	if (segments.size() == 1) {
 		vector<Segment> ans;
 		Segment s = segments[0];

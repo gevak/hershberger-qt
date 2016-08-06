@@ -43,7 +43,6 @@ public:
         EnvelopeAppClass->resize(583, 408);
         actionClear = new QAction(EnvelopeAppClass);
         actionClear->setObjectName(QStringLiteral("actionClear"));
-        actionClear->setCheckable(false);
         actionInsert_Random = new QAction(EnvelopeAppClass);
         actionInsert_Random->setObjectName(QStringLiteral("actionInsert_Random"));
         centralWidget = new QWidget(EnvelopeAppClass);
@@ -54,7 +53,6 @@ public:
         verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
         envDrawWidget = new SegmentPaintWidget(centralWidget);
         envDrawWidget->setObjectName(QStringLiteral("envDrawWidget"));
-        envDrawWidget->setEnabled(true);
 
         verticalLayout->addWidget(envDrawWidget);
 

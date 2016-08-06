@@ -109,5 +109,5 @@ BOOST_AUTO_TEST_CASE(test_envelope)
 	BOOST_REQUIRE(points_equal(ans[1].beg, Point(-2, -1)));
 	BOOST_REQUIRE(points_equal(ans[2].beg, Point(-1, 0)));
 	BOOST_REQUIRE(points_equal(ans[3].beg, Point(1, 0)));
-	BOOST_REQUIRE(points_equal(ans[4].beg, Point(3, -2)));
+	BOOST_REQUIRE(points_equal(ans[3].end, Point(3, -2)));
 } */
