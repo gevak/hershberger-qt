@@ -15,38 +15,61 @@
 #include <QtWidgets/QButtonGroup>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QMainWindow>
+#include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QStatusBar>
-#include <QtWidgets/QToolBar>
+#include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
+#include "segmentpaintwidget.h"
 
 QT_BEGIN_NAMESPACE
 
 class Ui_EnvelopeAppClass
 {
 public:
-    QMenuBar *menuBar;
-    QToolBar *mainToolBar;
+    QAction *actionClear;
+    QAction *actionInsert_Random;
     QWidget *centralWidget;
+    QVBoxLayout *verticalLayout;
+    SegmentPaintWidget *envDrawWidget;
+    QMenuBar *menuBar;
+    QMenu *menuEdit;
     QStatusBar *statusBar;
 
     void setupUi(QMainWindow *EnvelopeAppClass)
     {
         if (EnvelopeAppClass->objectName().isEmpty())
             EnvelopeAppClass->setObjectName(QStringLiteral("EnvelopeAppClass"));
-        EnvelopeAppClass->resize(600, 400);
-        menuBar = new QMenuBar(EnvelopeAppClass);
-        menuBar->setObjectName(QStringLiteral("menuBar"));
-        EnvelopeAppClass->setMenuBar(menuBar);
-        mainToolBar = new QToolBar(EnvelopeAppClass);
-        mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
-        EnvelopeAppClass->addToolBar(mainToolBar);
+        EnvelopeAppClass->resize(410, 283);
+        actionClear = new QAction(EnvelopeAppClass);
+        actionClear->setObjectName(QStringLiteral("actionClear"));
+        actionInsert_Random = new QAction(EnvelopeAppClass);
+        actionInsert_Random->setObjectName(QStringLiteral("actionInsert_Random"));
         centralWidget = new QWidget(EnvelopeAppClass);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
+        verticalLayout = new QVBoxLayout(centralWidget);
+        verticalLayout->setSpacing(6);
+        verticalLayout->setContentsMargins(11, 11, 11, 11);
+        verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
+        envDrawWidget = new SegmentPaintWidget(centralWidget);
+        envDrawWidget->setObjectName(QStringLiteral("envDrawWidget"));
+
+        verticalLayout->addWidget(envDrawWidget);
+
         EnvelopeAppClass->setCentralWidget(centralWidget);
+        menuBar = new QMenuBar(EnvelopeAppClass);
+        menuBar->setObjectName(QStringLiteral("menuBar"));
+        menuBar->setGeometry(QRect(0, 0, 410, 21));
+        menuEdit = new QMenu(menuBar);
+        menuEdit->setObjectName(QStringLiteral("menuEdit"));
+        EnvelopeAppClass->setMenuBar(menuBar);
         statusBar = new QStatusBar(EnvelopeAppClass);
         statusBar->setObjectName(QStringLiteral("statusBar"));
         EnvelopeAppClass->setStatusBar(statusBar);
+
+        menuBar->addAction(menuEdit->menuAction());
+        menuEdit->addAction(actionClear);
+        menuEdit->addAction(actionInsert_Random);
 
         retranslateUi(EnvelopeAppClass);
 
@@ -56,6 +79,11 @@ public:
     void retranslateUi(QMainWindow *EnvelopeAppClass)
     {
         EnvelopeAppClass->setWindowTitle(QApplication::translate("EnvelopeAppClass", "EnvelopeApp", 0));
+        actionClear->setText(QApplication::translate("EnvelopeAppClass", "Clear", 0));
+        actionClear->setShortcut(QApplication::translate("EnvelopeAppClass", "Ctrl+Q", 0));
+        actionInsert_Random->setText(QApplication::translate("EnvelopeAppClass", "Insert Random", 0));
+        actionInsert_Random->setShortcut(QApplication::translate("EnvelopeAppClass", "Ctrl+R", 0));
+        menuEdit->setTitle(QApplication::translate("EnvelopeAppClass", "Edit", 0));
     } // retranslateUi
 
 };

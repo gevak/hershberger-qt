@@ -6,15 +6,6 @@
 #include "segment.h"
 #include <vector>
 
-class SegmentPaintWidget : public QWidget {
-	Q_OBJECT
-public:
-	std::vector<Segment> segments;
-	SegmentPaintWidget(std::vector<Segment> segments, QWidget* obj);
-	virtual void paintEvent(QPaintEvent*);
-
-};
-
 class EnvelopeApp : public QMainWindow
 {
 	Q_OBJECT
@@ -22,6 +13,7 @@ class EnvelopeApp : public QMainWindow
 public:
 	EnvelopeApp(QWidget *parent = 0);
 	~EnvelopeApp();
+	void customUiSetup();
 
 private:
 	Ui::EnvelopeAppClass ui;
