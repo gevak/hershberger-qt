@@ -90,24 +90,48 @@ BOOST_AUTO_TEST_CASE(test_vertical_segments)
 BOOST_AUTO_TEST_CASE(test_merge)
 {
 vector<Segment> segs1;
-
+segs1.push_back(Segment(Point(-Point::INFINITE_VALUE, Point::INFINITE_VALUE), Point(0, Point::INFINITE_VALUE)));
+segs1.push_back(Segment(Point(0, 1), Point(2, 1)));
+segs1.push_back(Segment(Point(2, Point::INFINITE_VALUE), Point(Point::INFINITE_VALUE, Point::INFINITE_VALUE)));
 vector<Segment> segs2;
+segs2.push_back(Segment(Point(-Point::INFINITE_VALUE, Point::INFINITE_VALUE), Point(3, Point::INFINITE_VALUE)));
+segs2.push_back(Segment(Point(3, 1), Point(4, 1)));
+segs2.push_back(Segment(Point(4, Point::INFINITE_VALUE), Point(Point::INFINITE_VALUE, Point::INFINITE_VALUE)));
+vector<Segment> ans = merge_envelopes(segs1, segs2);
+BOOST_REQUIRE_EQUAL(ans.size(), 5);
+BOOST_REQUIRE(ans[0].is_infinite_height());
+BOOST_REQUIRE(points_equal(ans[1].beg, Point(0, 1)));
+BOOST_REQUIRE(points_equal(ans[1].end, Point(2, 1)));
+BOOST_REQUIRE(ans[2].is_infinite_height());
+BOOST_REQUIRE(points_equal(ans[3].beg, Point(3, 1)));
+BOOST_REQUIRE(points_equal(ans[3].end, Point(4, 1)));
+BOOST_REQUIRE(ans[4].is_infinite_height());
 
 } */
 
-/*
+
 BOOST_AUTO_TEST_CASE(test_envelope)
 {
 	vector<Segment> segs;
+	segs.push_back(Segment(Point(-1, 1), Point(0, 1)));
+	segs.push_back(Segment(Point(1, 1), Point(2, 1)));
+	segs.push_back(Segment(Point(3, 1), Point(4, -2)));
+	vector<Segment> ans = lower_envelope_dc(segs);
+	BOOST_REQUIRE_EQUAL(ans.size(), 7);
+	BOOST_REQUIRE(ans[0].is_infinite_height());
+	BOOST_REQUIRE(points_equal(ans[1].beg, Point(-1, 1)));
+	BOOST_REQUIRE(points_equal(ans[3].beg, Point(1, 1)));
+	BOOST_REQUIRE(points_equal(ans[5].beg, Point(3, 1)));
+	BOOST_REQUIRE(points_equal(ans[5].end, Point(4, -2)));
+	segs.clear();
 	segs.push_back(Segment(Point(-2, -1), Point(2, 3)));
 	segs.push_back(Segment(Point(-1.5, 0), Point(2.5, 0)));
 	segs.push_back(Segment(Point(0, 1), Point(3, -2)));
-	vector<Segment> ans = lower_envelope_dc(segs);
-	std::cout << ans << std::endl; //DELETEME
+	ans = lower_envelope_dc(segs);
 	BOOST_REQUIRE_EQUAL(ans.size(), 5);
 	BOOST_REQUIRE(ans[0].is_infinite_height());
 	BOOST_REQUIRE(points_equal(ans[1].beg, Point(-2, -1)));
 	BOOST_REQUIRE(points_equal(ans[2].beg, Point(-1, 0)));
 	BOOST_REQUIRE(points_equal(ans[3].beg, Point(1, 0)));
 	BOOST_REQUIRE(points_equal(ans[3].end, Point(3, -2)));
-} */
+} 

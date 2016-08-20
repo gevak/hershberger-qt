@@ -168,6 +168,9 @@ bool Segment::is_vertical() const
 Point Segment::get_point_at_x(coord_type x) const
 {
 	assert(this->beg.x <= x && this->end.x >= x);
+	if (this->is_infinite_height()) {
+		return Point(x, Point::INFINITE_VALUE);
+	}
 	return this->get_intersection(Segment(Point(x, -Point::INFINITE_VALUE), Point(x, Point::INFINITE_VALUE)));
 }
 

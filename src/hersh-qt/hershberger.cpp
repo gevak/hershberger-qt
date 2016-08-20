@@ -7,6 +7,8 @@ using std::iterator;
 using std::advance;
 
 vector<Segment> merge_envelopes(vector<Segment>& env1, vector<Segment>& env2) {
+	//std::cout << "env1: \n " << env1 << std::endl;
+	//std::cout << "env2: \n " << env2 << std::endl;
 	vector<Segment> res;
 	auto bot = env1;
 	auto top = env2;
@@ -85,6 +87,8 @@ vector<Segment> merge_envelopes(vector<Segment>& env1, vector<Segment>& env2) {
 	coord_type last_x = res[res.size() - 1].end.x;
 	Point plus_inf = Point(Point::INFINITE_VALUE, Point::INFINITE_VALUE);
 	res.push_back(Segment(Point(last_x, Point::INFINITE_VALUE), plus_inf));
+	//std::cout << "res: \n " << res << std::endl;
+	//std::cout << " ---------------------------------------  " << std::endl;
 	return res;
 }
 
@@ -94,6 +98,7 @@ vector<Segment> lower_envelope_dc(vector<Segment> segments) {
 	// This solution does cause our memory consumption to reach O(nlogn) which is not really necessary, 
 	// but good enough since this isn't the algorithm we're here to implement
 	// TODO: Improve this memory consumption
+	//std::cout << "segments: \n" << segments << std::endl;
 	if (segments.size() <= 0) {
 		vector<Segment> ans;
 		Point min_inf(-Point::INFINITE_VALUE, Point::INFINITE_VALUE);
@@ -116,7 +121,7 @@ vector<Segment> lower_envelope_dc(vector<Segment> segments) {
 	vector<Segment> first_elements(segments.begin(), 
 		segments.begin() + (segments.size() / 2));
 
-	vector<Segment> last_elements(segments.begin() + (segments.size() / 2) + 1,
+	vector<Segment> last_elements(segments.begin() + (segments.size() / 2),
 		segments.end());
 
 	vector<Segment> first_env = lower_envelope_dc(first_elements);
