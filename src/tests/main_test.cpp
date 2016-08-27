@@ -86,7 +86,7 @@ BOOST_AUTO_TEST_CASE(test_vertical_segments)
 }
 
 
-/*
+
 BOOST_AUTO_TEST_CASE(test_merge)
 {
 vector<Segment> segs1;
@@ -107,10 +107,10 @@ BOOST_REQUIRE(points_equal(ans[3].beg, Point(3, 1)));
 BOOST_REQUIRE(points_equal(ans[3].end, Point(4, 1)));
 BOOST_REQUIRE(ans[4].is_infinite_height());
 
-} */
+} 
 
 
-BOOST_AUTO_TEST_CASE(test_envelope)
+BOOST_AUTO_TEST_CASE(test_envelope_dc)
 {
 	vector<Segment> segs;
 	segs.push_back(Segment(Point(-1, 1), Point(0, 1)));
@@ -135,3 +135,30 @@ BOOST_AUTO_TEST_CASE(test_envelope)
 	BOOST_REQUIRE(points_equal(ans[3].beg, Point(1, 0)));
 	BOOST_REQUIRE(points_equal(ans[3].end, Point(3, -2)));
 } 
+
+/*
+BOOST_AUTO_TEST_CASE(test_envelope_hersh)
+{
+	vector<Segment> segs;
+	segs.push_back(Segment(Point(-1, 1), Point(0, 1)));
+	segs.push_back(Segment(Point(1, 1), Point(2, 1)));
+	segs.push_back(Segment(Point(3, 1), Point(4, -2)));
+	vector<Segment> ans = lower_envelope_hersh(segs);
+	BOOST_REQUIRE_EQUAL(ans.size(), 7);
+	BOOST_REQUIRE(ans[0].is_infinite_height());
+	BOOST_REQUIRE(points_equal(ans[1].beg, Point(-1, 1)));
+	BOOST_REQUIRE(points_equal(ans[3].beg, Point(1, 1)));
+	BOOST_REQUIRE(points_equal(ans[5].beg, Point(3, 1)));
+	BOOST_REQUIRE(points_equal(ans[5].end, Point(4, -2)));
+	segs.clear();
+	segs.push_back(Segment(Point(-2, -1), Point(2, 3)));
+	segs.push_back(Segment(Point(-1.5, 0), Point(2.5, 0)));
+	segs.push_back(Segment(Point(0, 1), Point(3, -2)));
+	ans = lower_envelope_hersh(segs);
+	BOOST_REQUIRE_EQUAL(ans.size(), 5);
+	BOOST_REQUIRE(ans[0].is_infinite_height());
+	BOOST_REQUIRE(points_equal(ans[1].beg, Point(-2, -1)));
+	BOOST_REQUIRE(points_equal(ans[2].beg, Point(-1, 0)));
+	BOOST_REQUIRE(points_equal(ans[3].beg, Point(1, 0)));
+	BOOST_REQUIRE(points_equal(ans[3].end, Point(3, -2)));
+}*/

@@ -1,10 +1,33 @@
 #include <iterator>
-
+#include <list>
+#include <assert.h>
 #include "hershberger.h"
 
 using std::vector;
 using std::iterator;
-using std::advance;
+using std::list;
+using std::copy_if;
+
+
+vector<Segment> concat_envelopes(vector<Segment>& env1, vector<Segment>& env2) {
+	vector<Segment> ret = env1;
+	ret[ret.size() - 1] = Segment(env1[env1.size() - 1].beg, env2[0].end); // Connect them with infinite segment
+	ret.insert(ret.end(), env2.begin() + 1, env2.end()); // Skip the first (infinite) segment of env2
+	return ret;
+}
+
+vector<Segment> merge_multiple_envelopes(vector<vector<Segment>>& envs) {
+	if (envs.size() == 1) {
+		return envs[0];
+;	}
+	vector<vector<Segment>> first_elements(envs.begin(),
+		envs.begin() + (envs.size() / 2));
+
+	vector<vector<Segment>> last_elements(envs.begin() + (envs.size() / 2),
+		envs.end());
+
+	return merge_envelopes(merge_multiple_envelopes(first_elements), merge_multiple_envelopes(last_elements));
+}
 
 vector<Segment> merge_envelopes(vector<Segment>& env1, vector<Segment>& env2) {
 	//std::cout << "env1: \n " << env1 << std::endl;
@@ -60,8 +83,6 @@ vector<Segment> merge_envelopes(vector<Segment>& env1, vector<Segment>& env2) {
 					SWAP(top, bot);
 					SWAP(ib, it);
 				}
-				// restitch = false;
-
 			}
 			else {
 				// top ends first, so increase top index. Don't insert bot yet because it might continue to be the bottom segment.
@@ -77,8 +98,6 @@ vector<Segment> merge_envelopes(vector<Segment>& env1, vector<Segment>& env2) {
 				else { // Top starts above bot, so we simply move on
 					;
 				}
-				//restitch = true;
-
 			}
 			
 		}
@@ -92,7 +111,7 @@ vector<Segment> merge_envelopes(vector<Segment>& env1, vector<Segment>& env2) {
 	return res;
 }
 
-vector<Segment> lower_envelope_dc(vector<Segment> segments) {
+vector<Segment> lower_envelope_dc(vector<Segment>& segments) {
 
 	// We could split the vector by simply changing the end pointer and beg pointer in O(1)
 	// This solution does cause our memory consumption to reach O(nlogn) which is not really necessary, 
@@ -129,4 +148,50 @@ vector<Segment> lower_envelope_dc(vector<Segment> segments) {
 	vector<Segment> last_env = lower_envelope_dc(last_elements);
 
 	return merge_envelopes(first_env, last_env);
+}
+
+/*
+* Gets the segments sorted by beg.x, the level number and the array of levels.
+* Calculates the envelope of the lines intersecting the median x, and concats to the currently build envelope at the given level,
+* and continues recursively for child sets.
+*/
+void hersh_level(vector<Segment>& segments, vector<vector<Segment>>& levels, unsigned int level) {
+	coord_type median = segments[segments.size() / 2].beg.x;
+	vector<Segment> vertically_cut, left, right;
+	copy_if(segments.begin(), segments.end(),
+		std::back_inserter(vertically_cut),
+		[&](const Segment& seg) { return seg.crosses_x(median); });
+
+	copy_if(segments.begin(), segments.end(),
+		std::back_inserter(left),
+		[&](const Segment& seg) { return !seg.crosses_x(median) && seg.beg.x <= median; });
+
+	copy_if(segments.begin(), segments.end(),
+		std::back_inserter(right),
+		[&](const Segment& seg) { return !seg.crosses_x(median) && seg.beg.x > median; });
+
+	// Add the lower envelope of the vertically intersected segments to the level
+	vertically_cut = lower_envelope_dc(vertically_cut);
+	if (levels.size() <= level) { // Initialize the level
+		assert(levels.size() == level);
+		levels.push_back(vertically_cut); //TODO: fix slow copies like this
+	}
+	else {
+		levels[level] = concat_envelopes(levels[level], vertically_cut); // Concat to the end, since we're going from left to right
+	}
+	if (!left.empty()) {
+		hersh_level(left, levels, level + 1);
+	}
+	if (!right.empty()) {
+		hersh_level(left, levels, level + 1);
+	}
+}
+
+vector<Segment> lower_envelope_hersh(vector<Segment> segments) {
+	vector<vector<Segment>> levels;
+	// Recursively calculate all the levels
+	hersh_level(segments, levels, 0);
+	// Recursively merge the envelopes in a tree structure -
+	// they are envelopes of disjoint sets of segments, so merging each level will have low complexity and there are loglog(n) levels
+	return merge_multiple_envelopes(levels);
 }

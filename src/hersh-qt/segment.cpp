@@ -174,9 +174,13 @@ Point Segment::get_point_at_x(coord_type x) const
 	return this->get_intersection(Segment(Point(x, -Point::INFINITE_VALUE), Point(x, Point::INFINITE_VALUE)));
 }
 
+bool Segment::crosses_x(coord_type x) const {
+	return this->beg.x <= x && this->end.x >= x;
+}
+
 bool Segment::is_above(const Point& p) const
 {
-	assert(this->beg.x <= p.x);
+	//assert(this->beg.x <= p.x);
 	if (this->end.x < p.x) {
 		return false;
 	}

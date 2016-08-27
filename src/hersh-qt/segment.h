@@ -103,6 +103,8 @@ public:
 
 	Point get_point_at_x(coord_type x) const;
 
+	bool crosses_x(coord_type x) const;
+
 	bool is_above(const Point& p) const;
 
 };

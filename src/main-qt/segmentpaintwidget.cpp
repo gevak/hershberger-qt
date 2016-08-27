@@ -73,10 +73,10 @@ void SegmentPaintWidget::mouseDoubleClickEvent(QMouseEvent* evt) {
 }
 
 void SegmentPaintWidget::mousePressEvent(QMouseEvent* evt) {
-	if (evt->button() == Qt::MouseButton::RightButton) { 
-		// Handle right click
+	if (evt->button() == Qt::MouseButton::RightButton) { // Handle right click
 		this->insertedSegment = new Segment(Point(evt->x(), evt->y()), Point(Point::INFINITE_VALUE, Point::INFINITE_VALUE));
 	}
+	// TODO Handle endpoint dragging
 }
 
 void SegmentPaintWidget::mouseReleaseEvent(QMouseEvent* evt) {
