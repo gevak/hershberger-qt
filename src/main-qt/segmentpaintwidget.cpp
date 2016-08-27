@@ -27,7 +27,7 @@ QDebug operator<<(QDebug os, const Segment& s) //DELETEME
 }
 
 SegmentPaintWidget::SegmentPaintWidget(QWidget* obj = 0) : QWidget(obj), segments() {
-	segments.push_back(Segment(Point(10, 10), Point(80, 80)));
+	segments.push_back(Segment(Point(10, 10), Point(60, 60)));
 	segments.push_back(Segment(Point(20, 50), Point(130, 200)));
 	segments.push_back(Segment(Point(100, 30), Point(200, 80)));
 	srand(time(0));
@@ -64,7 +64,7 @@ void SegmentPaintWidget::addRandomSegment() {
 }
 
 void SegmentPaintWidget::recalculateEnvelope() {
-	this->env = lower_envelope_dc(this->segments);
+	this->env = lower_envelope_hersh(this->segments);
 	this->repaint();
 }
 

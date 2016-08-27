@@ -136,7 +136,7 @@ BOOST_AUTO_TEST_CASE(test_envelope_dc)
 	BOOST_REQUIRE(points_equal(ans[3].end, Point(3, -2)));
 } 
 
-/*
+
 BOOST_AUTO_TEST_CASE(test_envelope_hersh)
 {
 	vector<Segment> segs;
@@ -161,4 +161,4 @@ BOOST_AUTO_TEST_CASE(test_envelope_hersh)
 	BOOST_REQUIRE(points_equal(ans[2].beg, Point(-1, 0)));
 	BOOST_REQUIRE(points_equal(ans[3].beg, Point(1, 0)));
 	BOOST_REQUIRE(points_equal(ans[3].end, Point(3, -2)));
-}*/
+}

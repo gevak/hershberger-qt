@@ -72,8 +72,8 @@ Segment::Segment(const Segment& s) : beg(s.beg), end(s.end) {
 	}
 }; 
 
-bool Segment::operator<=(const Segment& s) const {
-	return this->end < s.end;
+bool Segment::operator<(const Segment& s) const {
+	return this->beg < s.beg;
 }
 
 /*

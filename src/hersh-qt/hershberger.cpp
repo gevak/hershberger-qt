@@ -17,6 +17,13 @@ vector<Segment> concat_envelopes(vector<Segment>& env1, vector<Segment>& env2) {
 }
 
 vector<Segment> merge_multiple_envelopes(vector<vector<Segment>>& envs) {
+	if (envs.empty()) {
+		vector<Segment> ans;
+		Point min_inf(-Point::INFINITE_VALUE, Point::INFINITE_VALUE);
+		Point plus_inf(Point::INFINITE_VALUE, Point::INFINITE_VALUE);
+		ans.push_back(Segment(min_inf, plus_inf));
+		return ans;
+	}
 	if (envs.size() == 1) {
 		return envs[0];
 ;	}
@@ -156,6 +163,9 @@ vector<Segment> lower_envelope_dc(vector<Segment>& segments) {
 * and continues recursively for child sets.
 */
 void hersh_level(vector<Segment>& segments, vector<vector<Segment>>& levels, unsigned int level) {
+	if (segments.empty()) {
+		return;
+	}
 	coord_type median = segments[segments.size() / 2].beg.x;
 	vector<Segment> vertically_cut, left, right;
 	copy_if(segments.begin(), segments.end(),
@@ -179,15 +189,12 @@ void hersh_level(vector<Segment>& segments, vector<vector<Segment>>& levels, uns
 	else {
 		levels[level] = concat_envelopes(levels[level], vertically_cut); // Concat to the end, since we're going from left to right
 	}
-	if (!left.empty()) {
-		hersh_level(left, levels, level + 1);
-	}
-	if (!right.empty()) {
-		hersh_level(left, levels, level + 1);
-	}
+	hersh_level(left, levels, level + 1);
+	hersh_level(right, levels, level + 1);
 }
 
 vector<Segment> lower_envelope_hersh(vector<Segment> segments) {
+	std::sort(segments.begin(), segments.end()); // Sort segments by beg.x to find medians easily
 	vector<vector<Segment>> levels;
 	// Recursively calculate all the levels
 	hersh_level(segments, levels, 0);

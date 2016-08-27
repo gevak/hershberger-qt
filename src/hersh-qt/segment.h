@@ -90,7 +90,7 @@ public:
 	/*
 	 Comparator function, returns a <= b when b's endpoint lies to the left of a's endpoint.
 	*/
-	bool operator<=(const Segment& s) const;
+	bool operator<(const Segment& s) const;
 	
 	/*
 		Returns true iff this segment has larger slope than s, i.e if this segment goes above 's' after their intersection (if such exists).
