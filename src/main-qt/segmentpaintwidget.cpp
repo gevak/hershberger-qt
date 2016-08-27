@@ -26,11 +26,12 @@ QDebug operator<<(QDebug os, const Segment& s) //DELETEME
 	return os;
 }
 
-SegmentPaintWidget::SegmentPaintWidget(QWidget* obj = 0) : QWidget(obj), segments() {
+SegmentPaintWidget::SegmentPaintWidget(QWidget* obj = 0) : QWidget(obj), segments(), insertedSegment(NULL), insertStartPoint(NULL) {
 	segments.push_back(Segment(Point(10, 10), Point(60, 60)));
 	segments.push_back(Segment(Point(20, 50), Point(130, 200)));
 	segments.push_back(Segment(Point(100, 30), Point(200, 80)));
 	srand(time(0));
+	this->setMouseTracking(true);
 	this->recalculateEnvelope();
 }
 
@@ -41,6 +42,9 @@ void SegmentPaintWidget::paintEvent(QPaintEvent*) {
 	for (int i = 0; i < this->segments.size(); i++){
 		if (!segments[i].is_infinite_height()) // Don't draw infinite segments
 			p.drawLine(this->segments[i].beg.x, this->segments[i].beg.y, this->segments[i].end.x, this->segments[i].end.y);
+	}
+	if (this->insertedSegment != NULL) {
+		p.drawLine(this->insertedSegment->beg.x, this->insertedSegment->beg.y, this->insertedSegment->end.x, this->insertedSegment->end.y);
 	}
 	p.setPen(QPen(Qt::darkGreen, 2));
 	for (int i = 0; i < this->env.size(); i++){
@@ -64,7 +68,11 @@ void SegmentPaintWidget::addRandomSegment() {
 }
 
 void SegmentPaintWidget::recalculateEnvelope() {
+	if (this->insertedSegment != NULL)
+		this->segments.push_back(*this->insertedSegment);
 	this->env = lower_envelope_hersh(this->segments);
+	if (this->insertedSegment != NULL)
+		this->segments.pop_back();
 	this->repaint();
 }
 
@@ -74,7 +82,8 @@ void SegmentPaintWidget::mouseDoubleClickEvent(QMouseEvent* evt) {
 
 void SegmentPaintWidget::mousePressEvent(QMouseEvent* evt) {
 	if (evt->button() == Qt::MouseButton::RightButton) { // Handle right click
-		this->insertedSegment = new Segment(Point(evt->x(), evt->y()), Point(Point::INFINITE_VALUE, Point::INFINITE_VALUE));
+		this->insertedSegment = new Segment(Point(evt->x(), evt->y()), Point(evt->x(), evt->y()));
+		this->insertStartPoint = new Point(evt->x(), evt->y());
 	}
 	// TODO Handle endpoint dragging
 }
@@ -82,12 +91,29 @@ void SegmentPaintWidget::mousePressEvent(QMouseEvent* evt) {
 void SegmentPaintWidget::mouseReleaseEvent(QMouseEvent* evt) {
 	if (evt->button() == Qt::MouseButton::RightButton) {
 		// Handle right click release
-		this->insertedSegment->end = Point(evt->x(), evt->y());
-		Segment s(*this->insertedSegment);
-		qInfo() << "Adding segment " << s;
-		this->segments.push_back(s);
-		delete this->insertedSegment;
-		this->recalculateEnvelope();
+		if (this->insertedSegment != NULL) {
+			this->insertedSegment->set_endpoints(*this->insertStartPoint, Point(evt->x(), evt->y()));
+			Segment s(*this->insertedSegment);
+			qInfo() << "Adding segment " << s;
+			this->segments.push_back(s);
+			delete this->insertedSegment;
+			delete this->insertStartPoint;
+			this->insertedSegment = NULL;
+			this->insertStartPoint = NULL;
+			this->recalculateEnvelope();
+		}
 
+	}
+	else if (evt->button() == Qt::MouseButton::LeftButton) {
+		if (this->insertedSegment != NULL) {
+
+		}
+	}
+}
+
+void SegmentPaintWidget::mouseMoveEvent(QMouseEvent* evt) {
+	if (this->insertedSegment != NULL) {
+		this->insertedSegment->set_endpoints(*this->insertStartPoint, Point(evt->x(), evt->y()));
+		this->recalculateEnvelope();
 	}
 }

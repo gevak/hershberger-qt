@@ -72,6 +72,14 @@ Segment::Segment(const Segment& s) : beg(s.beg), end(s.end) {
 	}
 }; 
 
+void Segment::set_endpoints(const Point& beg, const Point& end) {
+	this->beg = Point(beg);
+	this->end = Point(end);
+	if (this->end.x < this->beg.x) {
+		SWAP(this->beg, this->end);
+	}
+}
+
 bool Segment::operator<(const Segment& s) const {
 	return this->beg < s.beg;
 }
@@ -97,7 +105,7 @@ bool Segment::contains(const Point& p) const {
 bool Segment::is_parallel(const Segment& s) const {
 	Point delta1 = this->end - this->beg;
 	Point delta2 = s.end - s.beg;
-	return IS_ZERO(delta1.x * delta2.y - delta1.y * delta2.x);
+	return IS_ZERO(delta1.x * delta2.y - delta1.y * delta2.x) || (this->is_vertical() && s.is_vertical());
 }
 
 bool Segment::has_intersection(const Segment& s) const {
@@ -115,7 +123,7 @@ bool Segment::has_intersection(const Segment& s) const {
 Point Segment::get_intersection(const Segment& s2) const {
 	// We assume that the segments are non-parallel
 	Segment s1 = *this;
-	if (s2.is_vertical()) {
+	if (s2.is_vertical()) { //TODO fix bug
 		return s2.get_intersection(s1); // Since only one of them can be vertical, this can't cause an infinite loop
 	}
 	Point delta1 = s1.end - s1.beg;

@@ -69,6 +69,9 @@ public:
 	*	Copy constructor.
 	*/
 	Segment(const Segment& s);
+
+	void set_endpoints(const Point & beg, const Point & end);
+
 	/*
 		Returns true iff this segment contains the given point within its boundaries.
 	*/

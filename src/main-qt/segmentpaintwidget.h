@@ -11,6 +11,7 @@ class SegmentPaintWidget : public QWidget {
 	Q_OBJECT
 private:
 	Segment* insertedSegment;
+	Point* insertStartPoint;
 public:
 	std::vector<Segment> segments;
 	std::vector<Segment> env;
@@ -22,6 +23,7 @@ public:
 	virtual void mouseDoubleClickEvent(QMouseEvent* evt);
 	virtual void mousePressEvent(QMouseEvent* evt);
 	virtual void mouseReleaseEvent(QMouseEvent* evt);
+	virtual void mouseMoveEvent(QMouseEvent * _event);
 };
 
 #endif
